@@ -75,14 +75,33 @@ ul li.active {
     display: flex !important;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    padding: 0px 0px;
   }
 }
-@media screen and (min-width: 500px) and (max-width: 660px) {
+@media screen and (max-width: 704px) {
   .pagination {
+    bottom: 0;
     display: flex !important;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    padding: 0px 0px;
+  }
+}
+@media screen and (max-width: 660px) {
+  .pagination {
+    bottom: 0;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 0px;
+  }
+}
+@media screen and (max-width: 400px) {
+  .pagination {
+    bottom: 0;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 0px;
   }
 }
