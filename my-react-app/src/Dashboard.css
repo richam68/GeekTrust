@@ -1,0 +1,52 @@
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding: auto;
+  min-height: 100vh;
+  position: relative;
+  border-collapse: collapse;
+}
+.content {
+  padding: 100px 0px;
+  flex: 1;
+}
+.search-desktop {
+  padding: 12px;
+  margin-left: 12px;
+  display: block;
+  width: 95%;
+  bottom: 12px;
+}
+.delete-all-btn {
+  background-color: red;
+  color: #fff;
+  border-radius: 30px;
+  height: 30px;
+  padding: 7px;
+  margin-top: 35px;
+  font-size: 15px;
+  justify-items: center;
+  cursor: pointer;
+}
+.footer {
+  display: flex;
+  justify-content: center;
+}
+@media screen and (max-width: 768px) {
+  .footer {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+  }
+}
+@media screen and (min-width: 350px) and (max-width: 635px) {
+  .footer {
+    display: block !important;
+  }
+}
+@media screen and (max-width: 600px) {
+  .container {
+    width: fit-content;
+  }
+}
