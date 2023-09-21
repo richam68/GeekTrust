@@ -142,7 +142,7 @@ const AdminPage = ({
                           items.role
                         )}
                       </td>
-                      <td>
+                      <td className="table-data">
                         {isEdit === items.id ? (
                           <div style={{ display: "flex" }}>
                             <button
