@@ -56,7 +56,7 @@ const AdminPage = ({
 
   return (
     <div>
-      <div class="heading">
+      <div className="heading">
         <table style={{ width: "100%", borderCollapse: " collapse" }}>
           <thead>
             <tr>
@@ -76,7 +76,7 @@ const AdminPage = ({
             </tr>
           </thead>
           {loading ? (
-            <div class="loading">
+            <div className="loading">
               Loading...
               <PendingIcon />
             </div>
@@ -147,13 +147,13 @@ const AdminPage = ({
                           <div style={{ display: "flex" }}>
                             <button
                               onClick={() => handleSave(items.id)}
-                              class="save-btn"
+                              className="save-btn"
                             >
                               <DoneIcon />
                             </button>
                             <button
                               onClick={() => handleCancel()}
-                              class="cancel-btn"
+                              className="cancel-btn"
                             >
                               <CancelIcon />
                             </button>
@@ -163,7 +163,7 @@ const AdminPage = ({
                             onClick={() => {
                               handleEditButtonClick(items.id);
                             }}
-                            class="edit-btn"
+                            className="edit-btn"
                           >
                             <EditIcon />
                           </button>
@@ -171,7 +171,7 @@ const AdminPage = ({
 
                         <button
                           onClick={() => handleDelete(items.id)}
-                          class="delete-btn"
+                          className="delete-btn"
                         >
                           <DeleteIcon />
                         </button>

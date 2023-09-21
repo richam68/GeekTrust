@@ -73,7 +73,7 @@ const Pagination = ({ postPerPage, totalPosts, paginate, currentPage }) => {
 
   return (
     <div>
-      <div class="pagination">
+      <div className="pagination">
         <button
           className={isActive ? "btn1 active" : "btn1 "}
           onClick={(e) => {
@@ -95,10 +95,10 @@ const Pagination = ({ postPerPage, totalPosts, paginate, currentPage }) => {
         <ul>
           {pageNumbers.map((number) => {
             const isActive = number === currentPage;
-            const liActiveClass = isActive ? "link active" : "link";
+            const liActiveclassName = isActive ? "link active" : "link";
             return (
               <li
-                className={liActiveClass}
+                className={liActiveclassName}
                 key={number}
                 onClick={() => paginate(number)}
               >

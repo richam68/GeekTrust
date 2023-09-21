@@ -122,8 +122,8 @@ export default function Dashboard() {
   };
 
   return (
-    <div class="container">
-      <div class="content text-white">
+    <div className="container">
+      <div className="content text-white">
         <input
           type="text"
           id="search"
@@ -131,7 +131,7 @@ export default function Dashboard() {
           value={search}
           onChange={handleSearch}
           placeholder="Search by name, email and role."
-          class="search-desktop"
+          className="search-desktop"
           width="100px"
         ></input>
 
@@ -150,8 +150,8 @@ export default function Dashboard() {
             adminCheckbox={adminCheckbox}
             setAdminCheckbox={setAdminCheckbox}
           />
-          <div class="footer">
-            <button class="delete-all-btn" onClick={() => deleteSelected()}>
+          <div className="footer">
+            <button className="delete-all-btn" onClick={() => deleteSelected()}>
               Delete Selected
             </button>
 
