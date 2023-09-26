@@ -4,9 +4,6 @@
   justify-content: space-around;
   align-items: center;
 }
-table {
-  overflow-x: auto;
-}
 th,
 td {
   padding: 13px;
@@ -44,28 +41,26 @@ tr {
   outline: none;
   border: none;
   color: gray;
+  cursor: pointer;
 }
 .delete-btn {
   background: transparent;
   outline: none;
   border: none;
   color: red;
+  cursor: pointer;
 }
 .save-btn {
   background: transparent;
   outline: none;
   border: none;
   color: green;
+  cursor: pointer;
 }
 .cancel-btn {
   background: transparent;
   outline: none;
   border: none;
   color: black;
-}
-.loading {
-  display: block;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+  cursor: pointer;
 }

@@ -7,118 +7,73 @@ export default function Dashboard() {
   const employeeDataUrl =
     "https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json";
 
-  //states
-  const [loading, setLoading] = useState(false);
+  const [originalData, setOriginalData] = useState([]);
   const [adminData, setAdminData] = useState([]);
+  const [paginatedData, setPaginatedData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage] = useState(10);
+  const postPerPage = 10;
+  const [totalItems, setTotalItems] = useState(0);
   const [search, setSearch] = useState("");
   const [isEdit, setIsEdit] = useState(null);
   const [editData, setEditData] = useState({});
   const [selectAllCheckbox, setSelectAllCheckbox] = useState(false);
   const [adminCheckbox, setAdminCheckbox] = useState({});
 
-  //slicing data according to requirement-
-  const indexOfLastPost = currentPage * postPerPage;
-  const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPost = adminData.slice(indexOfFirstPost, indexOfLastPost);
-
   useEffect(() => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    let currentPost = paginateFunction(adminData, currentPage, postPerPage);
+    setPaginatedData(currentPost);
+  }, [currentPage, adminData]);
+
   async function fetchData() {
     try {
-      setLoading(true);
       const response = await fetch(employeeDataUrl);
+      if (!response.ok) {
+        console.log("HTTP Error:", response.status);
+        return;
+      }
       const data = await response.json();
       setAdminData(data);
-    } catch (err) {
-    } finally {
-      setLoading(false);
+      setOriginalData(data);
+      setTotalItems(data.length);
+    } catch (error) {
+      console.error("Error Found", error);
     }
   }
 
+  function paginateFunction(adminData, currentPage, postPerPage) {
+    const indexOfFirstPost = (currentPage - 1) * postPerPage;
+    const indexOfLastPost = indexOfFirstPost + postPerPage;
+    return adminData.slice(indexOfFirstPost, indexOfLastPost);
+  }
   //changing page according to page number
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  //delete using delete icon
-  const handleDelete = async (id) => {
-    try {
-      const deletedData = adminData.filter((item) => item.id !== id);
-      setAdminData(deletedData);
-    } catch (err) {
-      console.log("err", err);
-    }
-  };
-
-  //delete using checkbox
-  const deleteSelected = async () => {
-    let selectedData = [];
-
-    try {
-      for (const id in adminCheckbox) {
-        if (adminCheckbox[id]) {
-          selectedData.push(id);
-        }
-      }
-
-      if (selectedData.length === 0) {
-        return;
-      }
-
-      if (selectAllCheckbox) {
-        setCurrentPage();
-        // setAdminData([]);
-        setAdminCheckbox({});
-        setSelectAllCheckbox(false);
-      } else {
-        const updateAdminTable = adminData.filter(
-          (element) => !selectedData.includes(element.id)
-        );
-        setAdminData(updateAdminTable);
-        let multipleSelectedCheckbox = { ...adminCheckbox };
-        selectedData.forEach((id) => {
-          delete multipleSelectedCheckbox[id];
-        });
-        setAdminCheckbox(multipleSelectedCheckbox);
-      }
-    } catch (err) {
-      console.log("err", err);
-    }
-  };
-
-  //saving edited data
-  const handleSave = (id) => {
-    let editingData = adminData.map((element) => {
-      return element.id === id ? { ...element, ...editData } : element;
-    });
-    setAdminData(editingData);
-    setIsEdit(null);
-    setEditData({});
-  };
-
-  useEffect(() => {}, [adminData]);
-
-  //search using any key
+  //search functionality using any key
   const handleSearch = async (e) => {
     let value = e.target.value;
     setSearch(value);
 
-    if (value === "") {
-      return;
-    } else {
-      let filteredDataValue = adminData.filter(
-        (item) =>
-          item.name.toLowerCase().includes(value.toLowerCase()) ||
-          item.email.toLowerCase().includes(value.toLowerCase()) ||
-          item.role.toLowerCase().includes(value.toLowerCase())
-      );
-      setAdminData(filteredDataValue);
-      setCurrentPage(1);
-    }
+    let filteredDataValue = originalData.filter(
+      (item) =>
+        item.name.toLowerCase().includes(value.toLowerCase()) ||
+        item.email.toLowerCase().includes(value.toLowerCase()) ||
+        item.role.toLowerCase().includes(value.toLowerCase())
+    );
+    let searchList = [];
+    filteredDataValue.forEach((obj) => {
+      if (obj !== null) {
+        searchList.push(obj);
+      }
+    });
+    setAdminData(searchList);
+    setCurrentPage(1);
+    setTotalItems(searchList.length);
   };
 
   return (
@@ -132,37 +87,40 @@ export default function Dashboard() {
           onChange={handleSearch}
           placeholder="Search by name, email and role."
           className="search-desktop"
-          width="100px"
         ></input>
 
-        <>
-          <Admin
-            loading={loading}
-            data={currentPost}
-            isEdit={isEdit}
-            setIsEdit={setIsEdit}
-            editData={editData}
-            setEditData={setEditData}
-            handleSave={handleSave}
-            handleDelete={handleDelete}
-            selectAllCheckbox={selectAllCheckbox}
-            setSelectAllCheckbox={setSelectAllCheckbox}
-            adminCheckbox={adminCheckbox}
-            setAdminCheckbox={setAdminCheckbox}
-          />
-          <div className="footer">
-            <button className="delete-all-btn" onClick={() => deleteSelected()}>
-              Delete Selected
-            </button>
+        <Admin
+          data={paginatedData}
+          adminData={adminData}
+          setAdminData={setAdminData}
+          setOriginalData={setOriginalData}
+          setCurrentPage={setCurrentPage}
+          setTotalItems={setTotalItems}
+          isEdit={isEdit}
+          setIsEdit={setIsEdit}
+          editData={editData}
+          setEditData={setEditData}
+          selectAllCheckbox={selectAllCheckbox}
+          setSelectAllCheckbox={setSelectAllCheckbox}
+          adminCheckbox={adminCheckbox}
+          setAdminCheckbox={setAdminCheckbox}
+        />
 
-            <Pagination
-              postPerPage={postPerPage}
-              totalPosts={adminData.length}
-              paginate={paginate}
-              currentPage={currentPage}
-            />
-          </div>
-        </>
+        <Pagination
+          postPerPage={postPerPage}
+          totalPosts={totalItems}
+          paginate={paginate}
+          currentPage={currentPage}
+          adminCheckbox={adminCheckbox}
+          adminData={adminData}
+          selectAllCheckbox={selectAllCheckbox}
+          setAdminCheckbox={setAdminCheckbox}
+          setSelectAllCheckbox={setSelectAllCheckbox}
+          setCurrentPage={setCurrentPage}
+          setOriginalData={setOriginalData}
+          setAdminData={setAdminData}
+          setTotalItems={setTotalItems}
+        />
       </div>
     </div>
   );
